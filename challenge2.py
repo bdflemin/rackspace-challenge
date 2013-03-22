@@ -3,11 +3,11 @@ import pyrax, sys, argparse, time
 
 parser = argparse.ArgumentParser(description='Challenge 2 usage.')
 parser.add_argument('--uuid', nargs='?', dest='uuid', required=True, help="Servers UUID Information")
-parser.add_argument('--username', nargs='*', dest='username', required=True, help="Your Cloud Username")
-parser.add_argument('--password', nargs='*', dest='password', required=True, help="Your Cloud API Key")
+parser.add_argument('--username', nargs='?', dest='username', required=True, help="Your Cloud Username")
+parser.add_argument('--password', nargs='?', dest='password', required=True, help="Your Cloud API Key")
 args = parser.parse_args()
 
-pyrax.set_credentials(args.username[0],args.password[0])
+pyrax.set_credentials(args.username,args.password)
 
 cs = pyrax.cloudservers
 
