@@ -2,6 +2,7 @@
 import pyrax, sys, argparse, time
 
 servers = []
+nodes = []
 flv = 2
 img = "c195ef3b-9195-4474-b6f7-16e5bd86acd0"
 
@@ -20,24 +21,25 @@ pyrax.set_credentials(args.username,args.password)
 cs = pyrax.cloudservers
 clb = pyrax.cloud_loadbalancers
 
-lbid = [i.id for i in clb.list() if str(i.name) == args.lb]
-
-if not lbid:
-	print "The loadbalancer you requested doesn't exist. Please try again."
-	sys.exit()
-else:
-	lb = clb.get(lbid[0])
-
 print "The following servers will be created: " + ", ".join(servers)
 
 for i in servers:
-	print "Starting... ", i
+	print "\nStarting... ", i
 	created = cs.servers.create(i, img, flv)
 
 	while cs.servers.get(created.id).status != "ACTIVE":
 		sys.stdout.write('.')
 		sys.stdout.flush()
-		time.sleep(10)
+		time.sleep(30)
 	private_ip = str(cs.servers.get(created.id).networks["private"][0])
-	if lb.add_nodes(clb.Node(address=private_ip, port=80, condition="ENABLED")):
-		print "\nThe server", i, "has been created and added to the loadbalancer", args.lb
+	nodes.append(clb.Node(address=private_ip, port=80, condition="ENABLED"))
+
+vip = clb.VirtualIP(type="PUBLIC")
+newlb = clb.create(args.lb, port=80, protocol="HTTP", nodes=[nodes[0], nodes[1]], virtual_ips=[vip])
+print "\nStarting the loadbalancer named", args.lb
+
+while str(clb.get(newlb.id).status) != "ACTIVE":
+	sys.stdout.write('.')
+	sys.stdout.flush()
+	time.sleep(30)
+print "\nLoadbalancer is now active and ready to use."
