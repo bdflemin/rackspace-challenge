@@ -5,7 +5,7 @@ parser = argparse.ArgumentParser(description='Challenge 3 usage.')
 parser.add_argument('--container', nargs='?', dest='container', required=True, help="Cloud Files Container Name")
 parser.add_argument('--username', nargs='?', dest='username', required=True, help="Your Cloud Username")
 parser.add_argument('--password', nargs='?', dest='password', required=True, help="Your Cloud API Key")
-parser.add_argument('PATH', nargs='?')
+parser.add_argument('PATH', nargs='?', required=True)
 args = parser.parse_args()
 
 pyrax.set_credentials(args.username,args.password)
