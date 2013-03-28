@@ -25,7 +25,8 @@ if not dnsID:
 	sys.exit()
 
 print "Starting this challenge with creating a container..."
-cont = cf.creat_container("challenge8")
+cont = cf.create_container("challenge8")
+cf.make_container_public(cont.name, ttl=900)
 print "... Container Name =", cont.name
 print "... CDN Enabled =", cont.cdn_enabled
 print "... Setting metadata for container now"
@@ -41,3 +42,4 @@ else:
 	sys.exit()
 print "... Creating CNAME named challenge8."+args.domain
 dom = cdns.get(dnsID)
+rec = dom.add_records({"type": "CNAME", "name": "challenge8."+args.domain, "data": cont.cdn_uri, "ttl": 6000})
