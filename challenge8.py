@@ -12,6 +12,7 @@ pyrax.set_credentials(args.username,args.password)
 cf = pyrax.cloudfiles
 cdns = pyrax.cloud_dns
 
+dnsID = ""
 print "Checking domain..."
 for d in cdns.get_domain_iterator():
 	if str(d.name) == args.domain:
