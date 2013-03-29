@@ -24,11 +24,11 @@ for i in servers:
 	print "Starting... ", i
 	created = cs.servers.create(i, img, flv)
 
-	while cs.servers.get(created.id).status != "ACTIVE":
+	while not cs.servers.get(created.id).networks:
 		sys.stdout.write('.')
 		sys.stdout.flush()
 		time.sleep(10)
 	newPassword = created.adminPass
 	newIP = cs.servers.get(created.id).networks['public']
 	print "\nAdmin password: ", newPassword
-	print "Server IPs: ", ["".join(i) for i in newIP if i.find('.') > -1]
+	print "Server IPs: ", str([i for i in newIP if i.find('.') > -1][0])
