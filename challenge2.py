@@ -10,25 +10,30 @@ args = parser.parse_args()
 pyrax.set_credentials(args.username,args.password)
 
 cs = pyrax.cloudservers
+try:
+	server = cs.servers.get(args.uuid)
+except:
+	print "The uuid doesn't exist, please try again."
+	sys.exit()
 
 status = ""
 epoch = int(time.time())
-server = cs.servers.get(args.uuid)
 sName = str(server.name)
 sFlavor = str(server.flavor['id'])
 imgID = cs.servers.create_image(args.uuid, sName+"_"+str(epoch))
 
+print "Starting challenge 2 now..."
 while str(status) != "ACTIVE":
 	sys.stdout.write('.')
 	sys.stdout.flush()
 	status = "".join([i.status for i in cs.images.list() if str(i.id) == imgID])
-	time.sleep(60)
+	time.sleep(30)
 print "\nThe new image has been created.\nImage ID: ", imgID, "\n"
-print "Creating a new server named ",sName,"_img"
+print "Creating a new server named",sName+"_img"
 
-created = cs.servers.create(sName + "_img", imgID, sFlavor)
+created = cs.servers.create(sName+"_img", imgID, sFlavor)
 while cs.servers.get(created.id).status != "ACTIVE":
 	sys.stdout.write('.')
 	sys.stdout.flush()
 	time.sleep(30)
-print "\nThe new server has been created successfully."
+print "\nThe new server has been created successfully named", str(created.name)
