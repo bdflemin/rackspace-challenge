@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import pyrax, sys, argparse, os
 
-parser = argparse.ArgumentParser(description='Challenge 3 usage.')
+parser = argparse.ArgumentParser(description='Challenge 6 usage.')
 parser.add_argument('--container', nargs='?', dest='container', required=True, help="Cloud Files Container Name")
 parser.add_argument('--username', nargs='?', dest='username', required=True, help="Your Cloud Username")
 parser.add_argument('--password', nargs='?', dest='password', required=True, help="Your Cloud API Key")

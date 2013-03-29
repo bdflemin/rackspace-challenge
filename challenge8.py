@@ -13,14 +13,13 @@ cf = pyrax.cloudfiles
 cdns = pyrax.cloud_dns
 
 print "Checking domain..."
-dnsID = ""
 for d in cdns.get_domain_iterator():
 	if str(d.name) == args.domain:
 		print "... Domain exists, continuing with the challenge\n"
 		dnsID = str(d.id)
 		break
-
-if not dnsID:
+if
+ not dnsID:
 	print "... Domain doesn't exist, try again"
 	sys.exit()
 
