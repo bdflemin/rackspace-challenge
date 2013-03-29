@@ -18,8 +18,8 @@ for d in cdns.get_domain_iterator():
 		print "... Domain exists, continuing with the challenge\n"
 		dnsID = str(d.id)
 		break
-if
- not dnsID:
+
+if not dnsID:
 	print "... Domain doesn't exist, try again"
 	sys.exit()
 
