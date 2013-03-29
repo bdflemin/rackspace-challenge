@@ -41,5 +41,10 @@ else:
 	print "...... Was not able to create object, please talk to administrator for more details"
 	sys.exit()
 print "... Creating CNAME named challenge8."+args.domain
-dom = cdns.get(dnsID)
-rec = dom.add_records({"type": "CNAME", "name": "challenge8."+args.domain, "data": cont.cdn_uri, "ttl": 6000})
+try:
+	dom = cdns.get(dnsID)
+	rec = dom.add_records({"type": "CNAME", "name": "challenge8."+args.domain, "data": cont.cdn_uri, "ttl": 6000})
+	print "... The CNAME", rec[0].name, "has been created without any issues. Challenge is complete."
+except pyrax.exceptions.DomainRecordAdditionFailed:
+	print "\nThe record of challenge8."+args.domain, "exists. Exiting challenge and please clean up containers and records."
+	sys.exit()
