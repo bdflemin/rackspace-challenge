@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import pyrax, sys, argparse, os
+import pyrax, sys, argparse, os, urlparse
 
 parser = argparse.ArgumentParser(description='Challenge 8 usage.')
 parser.add_argument('--domain', nargs='?', dest='domain', required=True, help="The Cloud DNS Domain to use")
@@ -43,7 +43,8 @@ else:
 print "... Creating CNAME named challenge8."+args.domain
 try:
 	dom = cdns.get(dnsID)
-	rec = dom.add_records({"type": "CNAME", "name": "challenge8."+args.domain, "data": cont.cdn_uri, "ttl": 6000})
+	arecord = urlparse.urlsplit(cont.cdn_uri).netloc
+	rec = dom.add_records({"type": "CNAME", "name": "challenge8."+args.domain, "data": arecord, "ttl": 6000})
 	print "... The CNAME", rec[0].name, "has been created without any issues. Challenge is complete."
 except pyrax.exceptions.DomainRecordAdditionFailed:
 	print "\nThe record of challenge8."+args.domain, "exists. Exiting challenge and please clean up containers and records."
