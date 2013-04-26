@@ -20,6 +20,11 @@ cn = pyrax.cloud_networks
 cdb = pyrax.cloud_databases
 
 def cleanServers():
+	for img in cs.images.list():
+		if str(img.metadata["image_type"]) == "snapshot":
+			print "Deleting saved image:", img.name
+			img.delete()
+
 	for server in cs.servers.list():
 		print "Deleting server:", server
 		server.delete()
